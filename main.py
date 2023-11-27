@@ -3,13 +3,15 @@ import serial
 from cvzone.SerialModule import SerialObject
 import serial.tools.list_ports
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
 import tensorflow as tf
 from pathlib import Path
+import io
+from PIL import Image
 ser = SerialObject("COM4")
 # Required size to input into Efficientnet tuned model
-TARGET_SHAPE = (1, 224, 224, 3)
 # data type required by model. EfficientNet will normalize images within the model so pixels should be between 0 and 255
-TARGET_DTYPE = tf.float32
 RESIZING_METHODS = [
     'bilinear',
     'lanczos3',
@@ -20,15 +22,17 @@ RESIZING_METHODS = [
     'area',
     'mitchellcubic',
 ]
-resizeMethod = RESIZING_METHODS[2]
+resizeMethod = RESIZING_METHODS[5]
 # Load TFLite model
 tfLiteModelPath = f'{Path.home()}\\OneDrive - Vertiv Co\\Documents\\Projects\\StickerAIChecker\\ArduinoImplementation\\arduino-vision-system\\bestTFLite.tflite'
 interpreter = tf.lite.Interpreter(model_path=tfLiteModelPath)
 interpreter.allocate_tensors()
-input_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details() # TODO See if putting these in loop makes a difference
-
-
+input_details = interpreter.get_input_details()[0]
+output_details = interpreter.get_output_details()[0]
+TARGET_DTYPE = input_details['dtype']
+TARGET_HEIGHT = input_details['shape'][1]
+TARGET_WIDTH = input_details['shape'][2]
+TARGET_SHAPE = input_details['shape']
 # Initialize serial connection
 def get_ports():
     ports = serial.tools.list_ports.comports()
@@ -43,7 +47,16 @@ def findArduino(portsFound):
             splitPort = strPort.split(' ')
             commPort = (splitPort[0])
     return commPort
-
+def plot_to_image(image):
+    if "Tensor" in str(type(image)):
+        image = tf.squeeze(image).numpy()
+    if "float" in str(image.dtype) and np.max(image) > 1.:
+        image = image.astype(np.int32)
+    plt.imshow(image, 
+            #    interpolation='nearest', 
+            #    cmap='none'
+               )
+    plt.show()
 foundPorts = get_ports()
 connectPort = str(foundPorts[2]).split(' ')[0]
 # findArduino(foundPorts)
@@ -62,40 +75,53 @@ while True:
     # Load TFLite model
     interpreter = tf.lite.Interpreter(model_path=tfLiteModelPath)
     interpreter.allocate_tensors()
-    
     # Read a frame from the webcam
     ret, frame = cap.read()
-    # Convert frame to tensor that can be read by interpreted model
-    img = tf.expand_dims(frame, axis=0)
-    img = tf.image.resize(
-        img, 
-        size=(TARGET_SHAPE[1], TARGET_SHAPE[2]),
-        method=resizeMethod,
-        # antialias=True,
-        # interpolation=cv2.INTER_CUBIC,
-        )
+    # * Convert frame from cv2 BGR to RGB
+    frameRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    resized_frame = tf.image.resize(
+        frameRGB,
+        size=(TARGET_HEIGHT, TARGET_WIDTH),
+        method=RESIZING_METHODS[5],
+    # antialias=True,
+    # interpolation=cv2.INTER_CUBIC,
+    )
+    frameDType = tf.cast(resized_frame, dtype=TARGET_DTYPE)
+    frameExpanded = tf.reshape(frameDType, shape=TARGET_SHAPE)
+    # normalized_tensor = frameExpanded / 255.
+    # tensor_frame = cv2.resize(
+    #     img, 
+    #     dsize=(TARGET_SHAPE[1], TARGET_SHAPE[2]),
+    #     interpolation=resizeMethod,
+    #     # antialias=True,
+    #     # interpolation=cv2.INTER_CUBIC,
+    #     )
+    # * Display the processed frame\
+
+    cv2.imshow('Processed Frame', frame)
+    # plot_to_image(frameExpanded)
+
     # Set the input tensor
-    interpreter.set_tensor(input_details[0]['index'], img)
+    interpreter.set_tensor(input_details['index'], frameExpanded)
     # Run inference
     interpreter.invoke()
-    # Display the processed frame
-    cv2.imshow('Processed Frame', frame)
+    
     # Get the output tensor
-    output_tensor = interpreter.tensor(output_details[0]['index'])
+    output_tensor = interpreter.tensor(output_details['index'])
     # Get the output results
     pred_prob = output_tensor() # prediction probability
     # print("type: ", type(pred_prob), type(output_tensor), type(output_tensor()))
     # print("Output Results:", pred_prob)  # Add this line to print the output_results
     pred_result = int(tf.round(pred_prob).numpy()[0][0]) # rounded prediciton result
     # Process output results
+    print(pred_result)
     if pred_result == 1.:  # Adjust threshold as needed
-        print(pred_result)
         ser.sendData([1])
-        cv2.waitKey(400)
+        cv2.waitKey(200)
     else:
-        print(pred_result)
-        # ser.sendData([0])
-        cv2.waitKey(100)
+        ser.sendData([0])
+        cv2.waitKey(200)
 
     # print("finished a run")
     # Break the loop if 'q' key is pressed
