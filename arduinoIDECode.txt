@@ -1,0 +1,26 @@
+#include <cvzone.h>
+
+SerialData serialData(1, 1);
+
+int valsRec[1];
+int RED = 9;
+int GREEN = 10;
+void setup() {
+  serialData.begin(9600);
+  pinMode(RED, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+}
+
+void loop() {
+  serialData.Get(valsRec);
+  if (valsRec[0] == 0) {
+    digitalWrite(RED, LOW);
+    digitalWrite(GREEN, HIGH);
+  }
+  else {
+    digitalWrite(RED, HIGH);
+    digitalWrite(GREEN, LOW);
+  }
+  
+  delay(20);
+}
