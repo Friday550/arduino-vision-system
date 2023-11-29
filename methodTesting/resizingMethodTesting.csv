@@ -1,0 +1,58 @@
+library,sublibrary,antialias,method,successRatePercent,timeElapsedAverage,timeElapsedMax,imageSet
+cv2,resize,No Option,INTER_CUBIC,99.74463739,0.077236106,,Train
+tf,image.resize,FALSE,lanczos3,99.74463739,0.078363761,,Train
+tf,image.resize,FALSE,nearest,99.6680286,0.085306263,,Train
+tf,image.resize,FALSE,gaussian,99.74463739,0.087329995,,Train
+tf,image.resize,FALSE,lanczos5,99.74463739,0.088202458,,Train
+tf,image.resize,FALSE,bilinear,99.71910112,,,Train
+tf,image.resize,FALSE,bicubic,99.71910112,,,Train
+tf,image.resize,FALSE,mitchellcubic,99.71910112,,,Train
+cv2,resize,No Option,INTER_LINEAR,99.69356486,,,Train
+tf,image.resize,FALSE,area,99.6680286,,,Train
+tf,image.resize,TRUE,bilinear,99.6680286,,,Train
+tf,image.resize,TRUE,lanczos3,99.6680286,,,Train
+tf,image.resize,TRUE,lanczos5,99.6680286,,,Train
+tf,image.resize,TRUE,bicubic,99.6680286,,,Train
+tf,image.resize,TRUE,nearest,99.6680286,,,Train
+tf,image.resize,TRUE,area,99.6680286,,,Train
+cv2,resize,No Option,INTER_AREA,99.6680286,,,Train
+tf,image.resize,TRUE,mitchellcubic,99.64249234,,,Train
+cv2,resize,No Option,INTER_NEAREST,99.61695608,,,Train
+tf,image.resize,TRUE,gaussian,99.59141982,,,Train
+tf,image.resize_with_pad,FALSE,lanczos3,99.56588355,,,Train
+tf,image.resize_with_pad,FALSE,bicubic,99.56588355,,,Train
+tf,image.resize_with_pad,FALSE,area,99.56588355,,,Train
+tf,image.resize_with_pad,TRUE,area,99.56588355,,,Train
+tf,image.resize_with_pad,FALSE,lanczos5,99.54034729,,,Train
+tf,image.resize_with_pad,FALSE,nearest,99.54034729,,,Train
+tf,image.resize_with_pad,FALSE,mitchellcubic,99.54034729,,,Train
+tf,image.resize_with_pad,TRUE,nearest,99.54034729,,,Train
+tf,image.resize_with_pad,FALSE,bilinear,99.51481103,,,Train
+tf,image.resize_with_pad,FALSE,gaussian,99.51481103,,,Train
+tf,image.resize_with_pad,TRUE,bilinear,99.51481103,,,Train
+tf,image.resize_with_pad,TRUE,lanczos3,99.48927477,,,Train
+tf,image.resize_with_pad,TRUE,lanczos5,99.48927477,,,Train
+tf,image.resize_with_pad,TRUE,bicubic,99.48927477,,,Train
+tf,image.resize_with_pad,TRUE,mitchellcubic,99.48927477,,,Train
+tf,image.resize_with_pad,TRUE,gaussian,99.43820225,,,Train
+tf,image.resize_with_crop_or_pad,No Option,No Option,92.56894791,,,Train
+tf,image.resize,True,bilinear,93.75,0.10068506561219692,0.11668968200683594,Test
+tf,image.resize,True,lanczos3,93.75,0.11849362403154373,0.14357542991638184,Test
+tf,image.resize,True,lanczos5,93.75,0.1384684443473816,0.16529583930969238,Test
+tf,image.resize,True,bicubic,93.75,0.1056881733238697,0.13271474838256836,Test
+tf,image.resize,True,gaussian,92.96875,0.10198031179606915,0.1288166046142578,Test
+tf,image.resize,True,nearest,95.3125,0.08599543944001198,0.1067953109741211,Test
+tf,image.resize,True,area,94.53125,0.0998351201415062,0.12467765808105469,Test
+tf,image.resize,True,mitchellcubic,93.75,0.10434012673795223,0.12098884582519531,Test
+tf,image.resize,False,bilinear,95.3125,0.0850354190915823,0.11623430252075195,Test
+tf,image.resize,False,lanczos3,95.3125,0.09159570001065731,0.11440134048461914,Test
+tf,image.resize,False,lanczos5,95.3125,0.09405810199677944,0.11592531204223633,Test
+tf,image.resize,False,bicubic,95.3125,0.0908920094370842,0.11486077308654785,Test
+tf,image.resize,False,gaussian,95.3125,0.09555497765541077,0.11518979072570801,Test
+tf,image.resize,False,nearest,95.3125,0.1003851369023323,0.12688493728637695,Test
+tf,image.resize,False,area,94.53125,0.10347960516810417,0.15395450592041016,Test
+tf,image.resize,False,mitchellcubic,95.3125,0.09089338220655918,0.10989856719970703,Test
+cv2,resize,No Option,INTER_NEAREST,92.96875,0.07002301886677742,0.08868098258972168,Test
+cv2,resize,No Option,INTER_LINEAR,95.3125,0.07331785373389721,0.09028244018554688,Test
+cv2,resize,No Option,INTER_CUBIC,95.3125,0.07627809047698975,0.10314750671386719,Test
+cv2,resize,No Option,INTER_AREA,94.53125,0.0960159208625555,0.13457345962524414,Test
