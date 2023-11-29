@@ -33,6 +33,16 @@ TARGET_DTYPE = input_details['dtype']
 TARGET_HEIGHT = input_details['shape'][1]
 TARGET_WIDTH = input_details['shape'][2]
 TARGET_SHAPE = input_details['shape']
+
+<<<<<<< HEAD
+
+# * Optimization constants
+INTERPOLATION_METHOD = cv2.INTER_CUBIC # Fastest among the methods that scored the highest accuracy (see resizingMethodTesting.csv in methodtesting folder)
+
+
+
+=======
+>>>>>>> parent of 328094e (Merge branch 'main' of https://github.com/Friday550/arduino-vision-system)
 # Initialize serial connection
 def get_ports():
     ports = serial.tools.list_ports.comports()
@@ -61,12 +71,29 @@ foundPorts = get_ports()
 connectPort = str(foundPorts[2]).split(' ')[0]
 # findArduino(foundPorts)
 
+
+if connectPort != 'None':
+    ser = serial.Serial(connectPort,baudrate = 9600, timeout = 1)  # Adjust port and baud rate accordingly
+    print('Connected to ' + connectPort)
+else:
+    print('Connection issue')
+
+<<<<<<< HEAD
 # if connectPort != 'None':
 #     ser = serial.Serial(connectPort,baudrate = 9600, timeout = 1)  # Adjust port and baud rate accordingly
 #     print('Connected to ' + connectPort)
 # else:
 #     print('Connection issue')
 
+
+# If port is not found, manually choose port
+ser = SerialObject("COM4",baudRate=9600)
+for i in foundPorts:
+    print(i)
+
+
+=======
+>>>>>>> parent of 328094e (Merge branch 'main' of https://github.com/Friday550/arduino-vision-system)
 # Open a connection to the webcam (assuming it's the first camera)
 cap = cv2.VideoCapture(0)
 
