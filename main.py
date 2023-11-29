@@ -52,11 +52,6 @@ TARGET_SHAPE = input_details['shape']
 INTERPOLATION_METHOD = cv2.INTER_CUBIC # Fastest among the methods that scored the highest accuracy (see resizingMethodTesting.csv in methodtesting folder)
 
 
-
-# * Optimization constants
-INTERPOLATION_METHOD = cv2.INTER_CUBIC # Fastest among the methods that scored the highest accuracy (see resizingMethodTesting.csv in methodtesting folder)
-
-
 # Initialize serial connection
 def get_ports():
     ports = serial.tools.list_ports.comports()
@@ -86,8 +81,8 @@ else:
     for i in foundPorts:
         print(i)
 
-# If port is not found, manually choose port
-# ser = SerialObject("COM4",baudRate=9600)q
+# * If port is not found, manually choose port
+# ^ ser = SerialObject("COM4",baudRate=9600)
 
 # for i in foundPorts:
 #     print(i)
