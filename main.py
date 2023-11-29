@@ -33,6 +33,7 @@ TARGET_DTYPE = input_details['dtype']
 TARGET_HEIGHT = input_details['shape'][1]
 TARGET_WIDTH = input_details['shape'][2]
 TARGET_SHAPE = input_details['shape']
+# * Optimization constants
 INTERPOLATION_METHOD = cv2.INTER_CUBIC # Fastest among the methods that scored the highest accuracy (see resizingMethodTesting.csv in methodtesting folder)
 
 # Initialize serial connection
@@ -43,7 +44,7 @@ def findArduino(portsFound):
     commPort = 'None'
     numConnection = len(portsFound)
     for i in range(0,numConnection):
-        port = foundPorts[i]
+        port = portsFound[i]
         strPort = str(port)
         if 'Arduino' in strPort:
             splitPort = strPort.split(' ')
