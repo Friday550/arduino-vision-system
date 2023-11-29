@@ -5,8 +5,20 @@ import serial.tools.list_ports
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from pathlib import Path
+import os
+import sys
 # from PIL import Image
+from pathlib import Path
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 def plot_to_image(image):
     """
@@ -23,7 +35,8 @@ def plot_to_image(image):
     
 
 # Load TFLite model
-tfLiteModelPath = f'{Path.home()}\\OneDrive - Vertiv Co\\Documents\\Projects\\StickerAIChecker\\ArduinoImplementation\\arduino-vision-system\\bestTFLite.tflite'
+# tfLiteModelPath = f'{Path.home()}\\OneDrive - Vertiv Co\\Documents\\Projects\\StickerAIChecker\\ArduinoImplementation\\arduino-vision-system\\bestTFLite.tflite'
+tfLiteModelPath = resource_path('\\\scfs01\\Users\\US_SOFTWARE_GROUP\\Projects\\StickerAIChecker\\ArduinoImplementation\\arduino-vision-system\\bestTFLite.tflite')
 interpreter = tf.lite.Interpreter(model_path=tfLiteModelPath)
 interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()[0]
@@ -69,25 +82,15 @@ if connectPort != 'None':
     print('Connected to ' + connectPort)
 else:
     print('Connection issue')
-
-# if connectPort != 'None':
-#     ser = serial.Serial(connectPort,baudrate = 9600, timeout = 1)  # Adjust port and baud rate accordingly
-#     print('Connected to ' + connectPort)
-# else:
-#     print('Connection issue')
+    ser = SerialObject("COM4", baudRate=9600)
+    for i in foundPorts:
+        print(i)
 
 # If port is not found, manually choose port
-ser = SerialObject("COM4",baudRate=9600)
-for i in foundPorts:
-    print(i)
+# ser = SerialObject("COM4",baudRate=9600)q
 
-
-
-# If port is not found, manually choose port
-ser = SerialObject("COM4",baudRate=9600)
-for i in foundPorts:
-    print(i)
-
+# for i in foundPorts:
+#     print(i)
 
 
 # Open a connection to the webcam (assuming it's the first camera)
@@ -129,10 +132,10 @@ while True:
     
     # * Process output results
     if pred_result == 1.:  # Adjust threshold as needed
-        ser.sendData([1])
+        ser.write(b'P')
         cv2.waitKey(200)
     else:
-        ser.sendData([0])
+        ser.write(b'F')
         cv2.waitKey(200)
 
     # Break the loop if 'q' key is pressed

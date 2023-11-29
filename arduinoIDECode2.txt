@@ -1,0 +1,29 @@
+const int noErrorPin = 10; // pin the LED is attached to
+const int ErrorPin = 9;
+int incomingByte;      // variable stores  serial data
+
+void setup() {
+  // initialize serial communication:
+  Serial.begin(9600);
+  // initialize the LED pin as an output:
+  pinMode(noErrorPin, OUTPUT);
+  pinMode(ErrorPin, OUTPUT);
+}
+
+void loop() {
+  // see if there's incoming serial data:
+  if (Serial.available() > 0) {
+    // read the oldest byte in the serial buffer:
+    incomingByte = Serial.read();
+    // if it's a capital P (ASCII 72), turn on the LED:
+    if (incomingByte == 'P') {
+      digitalWrite(noErrorPin, HIGH);
+      digitalWrite(ErrorPin, LOW);
+    }
+    // if it's an F (ASCII 76) turn off the LED:
+    if (incomingByte == 'F') {
+      digitalWrite(ErrorPin, HIGH);
+      digitalWrite(noErrorPin, LOW);
+    }
+  }
+}
